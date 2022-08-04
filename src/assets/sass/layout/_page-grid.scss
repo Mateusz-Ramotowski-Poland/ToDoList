@@ -1,0 +1,12 @@
+body{
+    width: $body-width;
+    margin:0 auto;
+}
+h1{
+    text-align: center;
+}
+.tasks{
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax($comment-width, max-content));
+}

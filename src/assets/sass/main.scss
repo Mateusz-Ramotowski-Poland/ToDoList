@@ -1,3 +1,8 @@
-* {
-    background: red;
-}
+@import "./abstracts/_variables.scss";
+@import "./components/_statistics.scss";
+@import "./components/_task.scss";
+@import "./components/_task-manager.scss";
+@import "./layout/_page-grid.scss";
+@import "./layout/_reset-default_formating.scss";
+
+
