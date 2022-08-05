@@ -19,6 +19,15 @@ function clearInputField(input: HTMLInputElement | null | Element | undefined):v
     input.value = '';
   }
 }
+function getYearMonthDayString():string{
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = (date.getMonth()+1).toString().padStart(2,'0');
+  const day = date.getDate().toString().padStart(2,'0');
+
+  const actualDate: string = `${year}-${month}-${day}`;
+  return actualDate;
+}
 
 function addNewTask(event: MouseEvent): void {
   event.preventDefault();
@@ -29,12 +38,14 @@ function addNewTask(event: MouseEvent): void {
 
   if (!checkInputValidity(textInputTask)) return;
 
+
+
   const newTask: string = `
   <div class="task">
           <div class="task__main">
                     <h2 class="task__title">${textInputTask?.value}</h2>
                     <input type="checkbox" name="" id="" class="task__checkbox" />
-                    <input type="date" name="" id="" class="task__date" />
+                    <input type="date" name="" id="" class="task__date" value='${getYearMonthDayString()}'/>
                     <button class="task__photo">Upload photo</button>
           </div>
 
@@ -75,11 +86,12 @@ function addNewTask(event: MouseEvent): void {
 btnAddTask?.addEventListener("click", addNewTask);
 
 function addNewComment(event: MouseEvent): void {
-  event.preventDefault();
 
   if (!event?.target?.classList?.contains("task__btn-add-comment")) {
     return;
   }
+
+  event.preventDefault();
 
   const currentTask = event.target.closest(".task");
   const textInputComments = currentTask.querySelectorAll(
@@ -95,7 +107,7 @@ function addNewComment(event: MouseEvent): void {
   if (!checkInputValidity(inputComment)) return;
 
   const date = new Date();
-  const actualDate: string = `${date.getDay()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  const actualDate: string = `${getYearMonthDayString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 
   const newComment: string = `
   <p class="comment">
