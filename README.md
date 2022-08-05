@@ -24,4 +24,5 @@ W innym miejscu trzeba było załadować plik saas w index.html.
 Uzywaj npm unistall i install do paczek. Nie odinstaluj ręcznie bo zostanie w package-lock.json
 
 
+05.08.2022
 

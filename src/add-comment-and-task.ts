@@ -1,11 +1,8 @@
 const btnAddTask: HTMLButtonElement | null = document.querySelector(
   ".manage-task__btn-add-task"
 );
-const listTask: HTMLUListElement | null = document.querySelector(".tasks");
-const textInputTask: HTMLInputElement | null = document.querySelector(
-  ".manage-task__textInput"
-);
-
+export const listTask: HTMLUListElement | null =
+  document.querySelector(".tasks");
 
 function checkInputValidity(
   input: HTMLInputElement | Element | null | undefined
@@ -17,9 +14,18 @@ function checkInputValidity(
     return true;
   }
 }
+function clearInputField(input: HTMLInputElement | null | Element | undefined):void {
+  if(input) {
+    input.value = '';
+  }
+}
 
 function addNewTask(event: MouseEvent): void {
   event.preventDefault();
+
+  const textInputTask: HTMLInputElement | null = document.querySelector(
+    ".manage-task__textInput"
+  );
 
   if (!checkInputValidity(textInputTask)) return;
 
@@ -63,6 +69,8 @@ function addNewTask(event: MouseEvent): void {
     `;
 
   listTask?.insertAdjacentHTML("beforeend", newTask);
+
+  clearInputField(textInputTask);
 }
 btnAddTask?.addEventListener("click", addNewTask);
 
@@ -70,31 +78,34 @@ function addNewComment(event: MouseEvent): void {
   event.preventDefault();
 
   if (!event?.target?.classList?.contains("task__btn-add-comment")) {
-    console.log("nie przycisk");
     return;
   }
 
-const currentTask = event.target.closest('.task');
-console.log(currentTask);
-const textInputComments = currentTask.querySelectorAll(".task__comments input");
-const inputAuthor: Element | undefined = textInputComments[0];
-const inputComment: Element | undefined = textInputComments[1];
-console.log(inputAuthor, inputComment);
-const comments: HTMLDivElement | null = currentTask.querySelector(".comments");
+  const currentTask = event.target.closest(".task");
+  const textInputComments = currentTask.querySelectorAll(
+    ".task__comments input"
+  );
+  const inputAuthor: Element | undefined = textInputComments[0];
+  const inputComment: Element | undefined = textInputComments[1];
 
+  const comments: HTMLDivElement | null =
+    currentTask.querySelector(".comments");
 
-  
-  console.log("Przycisk");
   if (!checkInputValidity(inputAuthor)) return;
   if (!checkInputValidity(inputComment)) return;
 
+  const date = new Date();
+  const actualDate: string = `${date.getDay()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+
   const newComment: string = `
   <p class="comment">
-    <span>${inputAuthor?.value}: ${inputComment?.value}</span>
+    ${actualDate}. ${inputAuthor?.value}: ${inputComment?.value}
   </p>
     `;
 
   comments?.insertAdjacentHTML("beforeend", newComment);
+  clearInputField(inputAuthor);
+  clearInputField(inputComment);
 }
 
 listTask?.addEventListener("click", addNewComment);
