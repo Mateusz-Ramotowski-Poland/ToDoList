@@ -1,0 +1,27 @@
+.task {
+  background-color: $color-blue-light;
+  &__main {
+    display: grid;
+    grid-template-columns: [row-start title-start]max-content[checkbox-start] max-content[checkbox-end title-end row-end];
+    grid-template-rows: [header-start]max-content[header-end date-start]max-content[date-end ]
+  }
+  &__title {
+    grid-row: header-start/header-end;
+    grid-column: title-start/title-end;
+    place-self: center;
+  }
+  &__checkbox {
+    grid-row: header-start/header-end;
+    grid-column: checkbox-start/checkbox-end;
+    align-self: start;
+    justify-self: end;
+  }
+  &__date {
+    grid-row: date-start/date-end;
+    grid-column: row-start/row-end;
+  }
+  &__task__comments {
+    grid-row: comment-start/comment-end;
+    grid-column: row-start/row-end;
+  }
+}
