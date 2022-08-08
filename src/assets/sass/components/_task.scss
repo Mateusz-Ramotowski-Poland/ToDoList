@@ -1,8 +1,24 @@
 .task {
   background-color: $color-blue-light;
+  display: grid;
+  grid-template-columns:repeat(2, 1fr) ;
+  grid-template-rows:repeat(3, max-content) ;
+  row-gap: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  &__subtasks {
+    grid-row: 2/3;
+    grid-column: 1/-1;
+  }
+  &__comments {
+    grid-row: 3/4;
+    grid-column: 1/-1;
+  }
   &__main {
+    grid-row: 1/2;
+    grid-column: 1/-1;
     display: grid;
-    grid-template-columns: [row-start title-start]max-content[checkbox-start] max-content[checkbox-end title-end row-end];
+    grid-template-columns: [row-start title-start]1fr[checkbox-start]1fr[checkbox-end title-end row-end];
     grid-template-rows: [header-start]max-content[header-end date-start]max-content[date-end ]
   }
   &__title {
@@ -19,9 +35,11 @@
   &__date {
     grid-row: date-start/date-end;
     grid-column: row-start/row-end;
+    justify-self: left;
   }
-  &__task__comments {
-    grid-row: comment-start/comment-end;
+  &__photo{
+    grid-row: header-end/date-end;
     grid-column: row-start/row-end;
+    justify-self: right;
   }
 }
