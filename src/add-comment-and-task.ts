@@ -1,12 +1,11 @@
-export interface Task {
-  title: string | undefined;
-  dueDate: string;
-  id: number;
-}
+import { taskArray, Task } from "./init";
 
 const btnAddTask: HTMLButtonElement | null = document.querySelector(".manage-task__btn-add-task");
 export const listTask: HTMLUListElement | null = document.querySelector(".tasks");
-export const taskArray: Task[] = [];
+
+function saveTasksInLocalStorage(tasks: Task[]) {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
 export function checkInputValidity(input: HTMLInputElement | null | undefined): boolean {
   if (!input?.checkValidity()) {
@@ -88,6 +87,7 @@ function addNewTask(event: Event): void {
 
   listTask?.insertAdjacentHTML("beforeend", newTask);
   clearInputField(textInputTask);
+  saveTasksInLocalStorage(taskArray);
 }
 btnAddTask?.addEventListener("click", addNewTask);
 

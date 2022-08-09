@@ -1,8 +1,9 @@
-import { taskArray, Task, createNewTaskString, listTask } from "./add-comment-and-task";
+import { createNewTaskString, listTask } from "./add-comment-and-task";
+import { taskArray, Task } from "./init";
 
 const btnSortArray = document.querySelector(".manage-task__sort-tasks");
 
-function renderTasks(tasks: Task[]): void {
+export function renderTasks(tasks: Task[]): void {
   for (const task of tasks) {
     const newTaskString = createNewTaskString(task.title, task.dueDate, task.id);
     listTask?.insertAdjacentHTML("beforeend", newTaskString);

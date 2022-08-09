@@ -1,4 +1,5 @@
-import { taskArray, Task, listTask } from "./add-comment-and-task";
+import { listTask } from "./add-comment-and-task";
+import { taskArray, Task } from "./init";
 
 function changeTaskDueDate(event: Event) {
   if (!((event.target as Element)?.getAttribute("name") === "task__date")) {
