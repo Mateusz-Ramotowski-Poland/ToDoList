@@ -3,7 +3,7 @@ import { taskArray, Task } from "./init";
 const btnAddTask: HTMLButtonElement | null = document.querySelector(".manage-task__btn-add-task");
 export const listTask: HTMLUListElement | null = document.querySelector(".tasks");
 
-function saveTasksInLocalStorage(tasks: Task[]) {
+export function saveTasksInLocalStorage(tasks: Task[]) {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
@@ -21,19 +21,14 @@ export function clearInputField(input: HTMLInputElement | null) {
     input.value = "";
   }
 }
-function getFormattedDate(
-  date: Date,
-  onlyYearMonthDay: boolean = false
-): string {
+
+function getYearMonthDayString(): string {
+  const date = new Date();
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
   const day = date.getDate().toString().padStart(2, "0");
-  const hour = date.getHours().toString().padStart(2, "0");
-  const minute = date.getMinutes().toString().padStart(2, "0");
-  const second = date.getSeconds().toString().padStart(2, "0");
-
-  if (onlyYearMonthDay) return `${year}-${month}-${day}`;
-  return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+  const actualDate: string = `${year}-${month}-${day}`;
+  return actualDate;
 }
 
 export function createNewTaskString(title: string | undefined, date: string, id: number): string {
@@ -75,44 +70,14 @@ export function createNewTaskString(title: string | undefined, date: string, id:
   `;
 }
 
-  const date = new Date();
-  const newTask: string = `
-  <div class="task">
-          <div class="task__main">
-                    <h2 class="task__title">${textInputTask?.value}</h2>
-                    <input type="checkbox"  class="task__checkbox" />
-                    <input type="date" class="task__date" value='${getFormattedDate(
-                      date,
-                      true
-                    )}'/>
-                    <button class="task__photo">Upload photo</button>
-          </div>
+function addNewTask(event: Event): void {
+  event.preventDefault();
 
-                  <div class="task__subtasks">
-                    <input type="text" />
-                    <button>Add subtask</button>
-                  </div>
+  const textInputTask: HTMLInputElement | null = document.querySelector("[name='manage-task__textInput']");
+  if (!checkInputValidity(textInputTask)) return;
 
-                  <form class="task__comments">
-                    <input
-                      type="text"
-                      placeholder="Author"
-                      required
-                      minlength="4"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Comment"
-                      required
-                      minlength="4"
-                    />
-                    <button class="task__btn-add-comment">Add comment</button>
-                  </form>
-            <div class="comments">
-
-        </div>
-  </div>
-    `;
+  const id: number = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+  const newTask: string = createNewTaskString(textInputTask?.value, getYearMonthDayString(), id);
 
   taskArray.push({
     title: textInputTask?.value,
@@ -142,8 +107,7 @@ function addNewComment(event: Event): void {
   if (!checkInputValidity(inputComment)) return;
 
   const date = new Date();
-  const actualDate: string = `${getFormattedDate(date)}`;
-
+  const actualDate: string = `${getYearMonthDayString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
   const newComment: string = `
   <p class="comment">
     ${actualDate}. ${inputAuthor?.value}:${inputComment?.value}

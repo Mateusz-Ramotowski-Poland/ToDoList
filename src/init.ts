@@ -6,4 +6,6 @@ export interface Task {
   id: number;
 }
 
-export const taskArray: Task[] = JSON.parse(localStorage.getItem("tasks" as string));
+export const taskArray: Task[] = JSON.parse(localStorage.getItem("tasks")) || [];
+
+console.log(taskArray);
