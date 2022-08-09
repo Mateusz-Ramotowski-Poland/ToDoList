@@ -14,19 +14,26 @@ function checkInputValidity(
     return true;
   }
 }
-function clearInputField(input: HTMLInputElement | null | Element | undefined):void {
-  if(input) {
-    input.value = '';
+function clearInputField(
+  input: HTMLInputElement | null | Element | undefined
+): void {
+  if (input) {
+    input.value = "";
   }
 }
-function getYearMonthDayString():string{
-  const date = new Date();
+function getFormattedDate(
+  date: Date,
+  onlyYearMonthDay: boolean = false
+): string {
   const year = date.getFullYear();
-  const month = (date.getMonth()+1).toString().padStart(2,'0');
-  const day = date.getDate().toString().padStart(2,'0');
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  const hour = date.getHours().toString().padStart(2, "0");
+  const minute = date.getMinutes().toString().padStart(2, "0");
+  const second = date.getSeconds().toString().padStart(2, "0");
 
-  const actualDate: string = `${year}-${month}-${day}`;
-  return actualDate;
+  if (onlyYearMonthDay) return `${year}-${month}-${day}`;
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 }
 
 function addNewTask(event: MouseEvent): void {
@@ -38,35 +45,33 @@ function addNewTask(event: MouseEvent): void {
 
   if (!checkInputValidity(textInputTask)) return;
 
-
-
+  const date = new Date();
   const newTask: string = `
   <div class="task">
           <div class="task__main">
                     <h2 class="task__title">${textInputTask?.value}</h2>
-                    <input type="checkbox" name="" id="" class="task__checkbox" />
-                    <input type="date" name="" id="" class="task__date" value='${getYearMonthDayString()}'/>
+                    <input type="checkbox"  class="task__checkbox" />
+                    <input type="date" class="task__date" value='${getFormattedDate(
+                      date,
+                      true
+                    )}'/>
                     <button class="task__photo">Upload photo</button>
           </div>
 
                   <div class="task__subtasks">
-                    <input type="text" name="" id="" />
+                    <input type="text" />
                     <button>Add subtask</button>
                   </div>
 
                   <form class="task__comments">
                     <input
                       type="text"
-                      name=""
-                      id=""
                       placeholder="Author"
                       required
                       minlength="4"
                     />
                     <input
                       type="text"
-                      name=""
-                      id=""
                       placeholder="Comment"
                       required
                       minlength="4"
@@ -86,7 +91,6 @@ function addNewTask(event: MouseEvent): void {
 btnAddTask?.addEventListener("click", addNewTask);
 
 function addNewComment(event: MouseEvent): void {
-
   if (!event?.target?.classList?.contains("task__btn-add-comment")) {
     return;
   }
@@ -107,7 +111,7 @@ function addNewComment(event: MouseEvent): void {
   if (!checkInputValidity(inputComment)) return;
 
   const date = new Date();
-  const actualDate: string = `${getYearMonthDayString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  const actualDate: string = `${getFormattedDate(date)}`;
 
   const newComment: string = `
   <p class="comment">
