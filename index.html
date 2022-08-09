@@ -28,38 +28,7 @@
     </main>
 
     <script type="module" src="/src/add-comment-and-task.ts"></script>
+    <script type="module" src="/src/sort-and-filter-tasks.ts"></script>
+    <script type="module" src="/src/change-dueDate.ts.ts"></script>
   </body>
 </html>
-
-<div class="task">
-  <div class="task__main">
-    <h2 class="task__title">${textInputTask?.value}</h2>
-    <input type="checkbox" name="task__checkbox" />
-    <input type="date" name="task__date" value="${getYearMonthDayString()}" />
-    <button name="task__photo" type="submit">Upload photo</button>
-  </div>
-
-  <form class="task__subtasks">
-    <input type="text" name="task_subtask-desciption" />
-    <button type="submit">Add subtask</button>
-  </form>
-
-  <form class="task__comments">
-    <input
-      type="text"
-      name="input-author"
-      placeholder="Author"
-      required
-      minlength="4"
-    />
-    <input
-      type="text"
-      name="input-comment"
-      placeholder="Comment"
-      required
-      minlength="4"
-    />
-    <button name="task__btn-add-comment" type="submit">Add comment</button>
-  </form>
-  <div class="comments"></div>
-</div>
