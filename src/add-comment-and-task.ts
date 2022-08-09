@@ -8,7 +8,7 @@ const btnAddTask: HTMLButtonElement | null = document.querySelector(".manage-tas
 export const listTask: HTMLUListElement | null = document.querySelector(".tasks");
 export const taskArray: Task[] = [];
 
-function checkInputValidity(input: HTMLInputElement | null | undefined): boolean {
+export function checkInputValidity(input: HTMLInputElement | null | undefined): boolean {
   if (!input?.checkValidity()) {
     input?.reportValidity();
     return false;
@@ -17,7 +17,7 @@ function checkInputValidity(input: HTMLInputElement | null | undefined): boolean
   }
 }
 
-function clearInputField(input: HTMLInputElement | null) {
+export function clearInputField(input: HTMLInputElement | null) {
   if (input) {
     input.value = "";
   }
@@ -42,10 +42,12 @@ export function createNewTaskString(title: string | undefined, date: string, id:
     <button name="task__photo" type="submit">Upload photo </button>
   </div>
 
-  <form class="task__subtasks">
-    <input type="text" name="task_subtask-desciption" />
-    <button  type="submit">Add subtask</button>
-  </form>
+  <div class="task__subtasks">
+    <form>
+      <input type="text" name="task_subtask-desciption" required minlength="4" />
+      <button type="submit" class="task__ad-subtask">Add subtask</button>
+    </form>
+  </div>
 
   <form class="task__comments">
     <input
