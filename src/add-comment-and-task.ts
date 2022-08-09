@@ -1,12 +1,14 @@
-const btnAddTask: HTMLButtonElement | null = document.querySelector(
-  ".manage-task__btn-add-task"
-);
-export const listTask: HTMLUListElement | null =
-  document.querySelector(".tasks");
+export interface Task {
+  title: string | undefined;
+  dueDate: string;
+  id: number;
+}
 
-function checkInputValidity(
-  input: HTMLInputElement | Element | null | undefined
-): boolean {
+const btnAddTask: HTMLButtonElement | null = document.querySelector(".manage-task__btn-add-task");
+export const listTask: HTMLUListElement | null = document.querySelector(".tasks");
+export const taskArray: Task[] = [];
+
+export function checkInputValidity(input: HTMLInputElement | null | undefined): boolean {
   if (!input?.checkValidity()) {
     input?.reportValidity();
     return false;
@@ -14,9 +16,8 @@ function checkInputValidity(
     return true;
   }
 }
-function clearInputField(
-  input: HTMLInputElement | null | Element | undefined
-): void {
+
+export function clearInputField(input: HTMLInputElement | null) {
   if (input) {
     input.value = "";
   }
@@ -36,14 +37,44 @@ function getFormattedDate(
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 }
 
-function addNewTask(event: MouseEvent): void {
-  event.preventDefault();
+export function createNewTaskString(title: string | undefined, date: string, id: number): string {
+  return `
+<div class="task" data-id=${id}>
+  <div class="task__main">
+    <h2 class="task__title">${title}</h2>
+    <input type="checkbox" name="task__checkbox" />
+    <input type="date" name="task__date" value="${date}" />
+    <button name="task__photo" type="submit">Upload photo </button>
+  </div>
 
-  const textInputTask: HTMLInputElement | null = document.querySelector(
-    ".manage-task__textInput"
-  );
+  <div class="task__subtasks">
+    <form>
+      <input type="text" name="task_subtask-desciption" required minlength="4" />
+      <button type="submit" class="task__ad-subtask">Add subtask</button>
+    </form>
+  </div>
 
-  if (!checkInputValidity(textInputTask)) return;
+  <form class="task__comments">
+    <input
+      type="text"
+      name="input-author"
+      placeholder="Author"
+      required
+      minlength="4"
+    />
+    <input
+      type="text"
+      name="input-comment"
+      placeholder="Comment"
+      required
+      minlength="4"
+    />
+    <button class="task__btn-add-comment" type="submit">Add comment</button>
+  </form>
+  <div class="comments"></div>
+</div>
+  `;
+}
 
   const date = new Date();
   const newTask: string = `
@@ -84,28 +115,28 @@ function addNewTask(event: MouseEvent): void {
   </div>
     `;
 
-  listTask?.insertAdjacentHTML("beforeend", newTask);
+  taskArray.push({
+    title: textInputTask?.value,
+    dueDate: getYearMonthDayString(),
+    id: id,
+  });
 
+  listTask?.insertAdjacentHTML("beforeend", newTask);
   clearInputField(textInputTask);
 }
 btnAddTask?.addEventListener("click", addNewTask);
 
-function addNewComment(event: MouseEvent): void {
-  if (!event?.target?.classList?.contains("task__btn-add-comment")) {
+function addNewComment(event: Event): void {
+  if (!(event?.target as Element)?.classList.contains("task__btn-add-comment")) {
     return;
   }
 
   event.preventDefault();
 
-  const currentTask = event.target.closest(".task");
-  const textInputComments = currentTask.querySelectorAll(
-    ".task__comments input"
-  );
-  const inputAuthor: Element | undefined = textInputComments[0];
-  const inputComment: Element | undefined = textInputComments[1];
-
-  const comments: HTMLDivElement | null =
-    currentTask.querySelector(".comments");
+  const currentTask = (event.target as Element).closest(".task");
+  const inputAuthor: HTMLInputElement | null = currentTask?.querySelector("[name='input-author']") || null;
+  const inputComment: HTMLInputElement | null = currentTask?.querySelector("[name='input-comment']") || null;
+  const comments: HTMLDivElement | null = currentTask?.querySelector(".comments") || null;
 
   if (!checkInputValidity(inputAuthor)) return;
   if (!checkInputValidity(inputComment)) return;
@@ -115,7 +146,7 @@ function addNewComment(event: MouseEvent): void {
 
   const newComment: string = `
   <p class="comment">
-    ${actualDate}. ${inputAuthor?.value}: ${inputComment?.value}
+    ${actualDate}. ${inputAuthor?.value}:${inputComment?.value}
   </p>
     `;
 
@@ -123,5 +154,4 @@ function addNewComment(event: MouseEvent): void {
   clearInputField(inputAuthor);
   clearInputField(inputComment);
 }
-
 listTask?.addEventListener("click", addNewComment);

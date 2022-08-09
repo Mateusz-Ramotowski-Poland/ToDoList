@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>ToDo list</title>
     <link rel="stylesheet" lang="scss" href="./src/assets/sass/main.scss" />
   </head>
   <body>
@@ -13,19 +13,11 @@
     </header>
     <main>
       <div class="manage-task">
-        <form action="">
-          <input
-            type="text"
-            name=""
-            required
-            minlength="4"
-            id=""
-            class="manage-task__textInput"
-          /><button class="manage-task__btn-add-task">Add task</button>
+        <form>
+          <input type="text" name="manage-task__textInput" required minlength="4" />
+          <button class="manage-task__btn-add-task">Add task</button>
         </form>
-        <button type="button" class="manage-task__sort-tasks">
-          Sort tasks
-        </button>
+        <button type="button" class="manage-task__sort-tasks">Sort tasks</button>
       </div>
 
       <ul class="tasks"></ul>
@@ -33,5 +25,8 @@
 
     <script type="module" src="/src/main.ts"></script>
     <script type="module" src="/src/add-comment-and-task.ts"></script>
+    <script type="module" src="/src/sort-filter-render-tasks.ts"></script>
+    <script type="module" src="/src/change-dueDate.ts"></script>
+    <script type="module" src="/src/add-subtask.ts"></script>
   </body>
 </html>
