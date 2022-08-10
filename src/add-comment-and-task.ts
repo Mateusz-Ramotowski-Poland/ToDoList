@@ -1,5 +1,7 @@
 import { listTask, taskArray } from "./main";
-import { Task } from "./interfaces";
+import { Task, Comment } from "./interfaces";
+import { findIndexOfCurrentTask } from "./change-due-date";
+import { createNewSubtaskString } from "./add-subtask";
 
 export function saveTasksInLocalStorage(tasks: Task[]) {
   localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -32,17 +34,28 @@ function getFormattedDate(date: Date, onlyYearMonthDay: boolean = false): string
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 }
 
-export function createNewTaskString(title: string | undefined, date: string, id: number): string {
+export function createNewTaskString({ title, dueDate, id, comments, subtasks }: Task): string {
+  let commentsString = "";
+  console.log(typeof comments);
+  for (const comment of comments) {
+    commentsString += createNewCommentString(comment);
+  }
+  let subtasksString = "";
+  for (const subtask of subtasks) {
+    subtasksString += createNewSubtaskString(subtask);
+  }
+
   return `
 <div class="task" data-id=${id}>
   <div class="task__main">
     <h2 class="task__title">${title}</h2>
     <input type="checkbox" name="task__checkbox" />
-    <input type="date" name="task__date" value="${date}" />
+    <input type="date" name="task__date" value="${dueDate}" />
     <button name="task__photo" type="submit">Upload photo </button>
   </div>
 
   <div class="task__subtasks">
+    ${subtasksString}
     <form>
       <input type="text" name="task_subtask-desciption" required minlength="4" />
       <button type="submit" class="task__ad-subtask">Add subtask</button>
@@ -66,7 +79,9 @@ export function createNewTaskString(title: string | undefined, date: string, id:
     />
     <button class="task__btn-add-comment" type="submit">Add comment</button>
   </form>
-  <div class="comments"></div>
+  <div class="comments">
+    ${commentsString}
+  </div>
 </div>
   `;
 }
@@ -78,17 +93,28 @@ export function addNewTask(event: Event): void {
 
   const date = new Date();
   const id: number = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-  const newTask: string = createNewTaskString(textInputTask?.value, getFormattedDate(date, true), id);
 
-  taskArray.push({
+  const newTask = {
     title: textInputTask?.value,
     dueDate: getFormattedDate(date, true),
     id: id,
-  });
+    comments: [],
+    subtasks: [],
+  };
+  taskArray.push(newTask);
+  const newTaskString: string = createNewTaskString(newTask);
 
-  listTask?.insertAdjacentHTML("beforeend", newTask);
+  listTask?.insertAdjacentHTML("beforeend", newTaskString);
   clearInputField(textInputTask);
   saveTasksInLocalStorage(taskArray);
+}
+
+export function createNewCommentString({ author, comment, date }: Comment) {
+  return `
+  <p class="comment">
+    ${date}. ${author}:${comment}
+  </p>
+  `;
 }
 
 export function addNewComment(event: Event): void {
@@ -107,14 +133,20 @@ export function addNewComment(event: Event): void {
   if (!checkInputValidity(inputComment)) return;
 
   const date = new Date();
-  const actualDate: string = `${getFormattedDate(date)}`;
-  const newComment: string = `
-  <p class="comment">
-    ${actualDate}. ${inputAuthor?.value}:${inputComment?.value}
-  </p>
-    `;
+  const newComment: Comment = {
+    author: inputAuthor?.value as string,
+    comment: inputComment?.value as string,
+    date: getFormattedDate(date),
+  };
 
-  comments?.insertAdjacentHTML("beforeend", newComment);
+  const newCommentString = createNewCommentString(newComment);
+  comments?.insertAdjacentHTML("beforeend", newCommentString);
+
+  const indexOfChangedTask = findIndexOfCurrentTask(currentTask);
+
+  taskArray[indexOfChangedTask].comments.push(newComment);
+
   clearInputField(inputAuthor);
   clearInputField(inputComment);
+  saveTasksInLocalStorage(taskArray);
 }

@@ -8,7 +8,7 @@ export function renderTasks(tasks: Task[]): void {
   }
 
   for (const task of tasks) {
-    const newTaskString = createNewTaskString(task.title, task.dueDate, task.id);
+    const newTaskString = createNewTaskString(task);
     listTask?.insertAdjacentHTML("beforeend", newTaskString);
   }
 }
