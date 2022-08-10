@@ -1,7 +1,6 @@
 import { checkInputValidity, clearInputField } from "./add-comment-and-task";
-import { listTask } from "./init";
 
-function addNewSubtask(event: Event): void {
+export function addNewSubtask(event: Event): void {
   if (!(event?.target as Element)?.classList.contains("task__ad-subtask")) {
     return;
   }
@@ -21,4 +20,3 @@ function addNewSubtask(event: Event): void {
   subtasksContainer?.insertAdjacentHTML("afterbegin", newSubtask);
   clearInputField(subtaskInput);
 }
-listTask?.addEventListener("click", addNewSubtask);

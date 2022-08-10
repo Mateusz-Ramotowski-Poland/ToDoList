@@ -1,7 +1,6 @@
 import { createNewTaskString } from "./add-comment-and-task";
-import { listTask, taskArray, Task } from "./init";
-
-const btnSortArray = document.querySelector(".manage-task__sort-tasks");
+import { listTask, taskArray } from "./main";
+import { Task } from "./interfaces";
 
 export function renderTasks(tasks: Task[]): void {
   for (const task of tasks) {
@@ -10,7 +9,7 @@ export function renderTasks(tasks: Task[]): void {
   }
 }
 
-function sortAndRenderTasks(): void {
+export function sortAndRenderTasks(): void {
   const deepCopyOfTaskArray = JSON.parse(JSON.stringify(taskArray)) ?? [];
 
   deepCopyOfTaskArray.sort(function (a: Task, b: Task) {
@@ -27,5 +26,3 @@ function sortAndRenderTasks(): void {
 
   renderTasks(deepCopyOfTaskArray);
 }
-
-btnSortArray?.addEventListener("click", sortAndRenderTasks);

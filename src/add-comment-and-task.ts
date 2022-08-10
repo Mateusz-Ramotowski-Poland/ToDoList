@@ -1,6 +1,5 @@
-import { listTask, taskArray, Task } from "./init";
-
-const btnAddTask: HTMLButtonElement | null = document.querySelector(".manage-task__btn-add-task");
+import { listTask, taskArray } from "./main";
+import { Task } from "./interfaces";
 
 export function saveTasksInLocalStorage(tasks: Task[]) {
   localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -72,14 +71,14 @@ export function createNewTaskString(title: string | undefined, date: string, id:
   `;
 }
 
-function addNewTask(event: Event): void {
+export function addNewTask(event: Event): void {
   event.preventDefault();
   const textInputTask: HTMLInputElement | null = document.querySelector("[name='manage-task__textInput']");
   if (!checkInputValidity(textInputTask)) return;
 
   const date = new Date();
   const id: number = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-  const newTask: string = createNewTaskString(textInputTask?.value, getFormattedDate(date), id);
+  const newTask: string = createNewTaskString(textInputTask?.value, getFormattedDate(date, true), id);
 
   taskArray.push({
     title: textInputTask?.value,
@@ -91,9 +90,8 @@ function addNewTask(event: Event): void {
   clearInputField(textInputTask);
   saveTasksInLocalStorage(taskArray);
 }
-btnAddTask?.addEventListener("click", addNewTask);
 
-function addNewComment(event: Event): void {
+export function addNewComment(event: Event): void {
   if (!(event?.target as Element)?.classList.contains("task__btn-add-comment")) {
     return;
   }
@@ -109,7 +107,7 @@ function addNewComment(event: Event): void {
   if (!checkInputValidity(inputComment)) return;
 
   const date = new Date();
-  const actualDate: string = `${getFormattedDate(date)}}`;
+  const actualDate: string = `${getFormattedDate(date)}`;
   const newComment: string = `
   <p class="comment">
     ${actualDate}. ${inputAuthor?.value}:${inputComment?.value}
@@ -120,4 +118,3 @@ function addNewComment(event: Event): void {
   clearInputField(inputAuthor);
   clearInputField(inputComment);
 }
-listTask?.addEventListener("click", addNewComment);

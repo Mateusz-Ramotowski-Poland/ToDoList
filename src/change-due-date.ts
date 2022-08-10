@@ -1,7 +1,7 @@
 import { saveTasksInLocalStorage } from "./add-comment-and-task";
-import { listTask, taskArray } from "./init";
+import { taskArray } from "./main";
 
-function changeTaskDueDate(event: Event) {
+export function changeTaskDueDate(event: Event) {
   if (!((event.target as Element)?.getAttribute("name") === "task__date")) {
     return;
   }
@@ -14,5 +14,3 @@ function changeTaskDueDate(event: Event) {
   taskArray[indexOfChangedTask].dueDate = (event.target as HTMLInputElement)?.value;
   saveTasksInLocalStorage(taskArray);
 }
-
-listTask?.addEventListener("input", changeTaskDueDate);
