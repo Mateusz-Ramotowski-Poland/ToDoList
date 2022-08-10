@@ -1,0 +1,13 @@
+{
+  "hash": "f400506a",
+  "browserHash": "62796612",
+  "optimized": {
+    "vite/dist/client/client.mjs": {
+      "src": "../../node_modules/vite/dist/client/client.mjs",
+      "file": "vite_dist_client_client__mjs.js",
+      "fileHash": "a0bdb368",
+      "needsInterop": false
+    }
+  },
+  "chunks": {}
+}

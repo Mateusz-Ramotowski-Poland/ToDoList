@@ -1,5 +1,5 @@
-import { listTask, saveTasksInLocalStorage } from "./add-comment-and-task";
-import { taskArray } from "./init";
+import { saveTasksInLocalStorage } from "./add-comment-and-task";
+import { listTask, taskArray } from "./init";
 
 function changeTaskDueDate(event: Event) {
   if (!((event.target as Element)?.getAttribute("name") === "task__date")) {

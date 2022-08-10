@@ -1,5 +1,5 @@
-import { createNewTaskString, listTask } from "./add-comment-and-task";
-import { taskArray, Task } from "./init";
+import { createNewTaskString } from "./add-comment-and-task";
+import { listTask, taskArray, Task } from "./init";
 
 const btnSortArray = document.querySelector(".manage-task__sort-tasks");
 

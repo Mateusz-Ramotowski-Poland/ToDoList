@@ -1,7 +1,6 @@
-import { taskArray, Task } from "./init";
+import { listTask, taskArray, Task } from "./init";
 
 const btnAddTask: HTMLButtonElement | null = document.querySelector(".manage-task__btn-add-task");
-export const listTask: HTMLUListElement | null = document.querySelector(".tasks");
 
 export function saveTasksInLocalStorage(tasks: Task[]) {
   localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -22,13 +21,16 @@ export function clearInputField(input: HTMLInputElement | null) {
   }
 }
 
-function getYearMonthDayString(): string {
-  const date = new Date();
+function getFormattedDate(date: Date, onlyYearMonthDay: boolean = false): string {
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
   const day = date.getDate().toString().padStart(2, "0");
-  const actualDate: string = `${year}-${month}-${day}`;
-  return actualDate;
+  const hour = date.getHours().toString().padStart(2, "0");
+  const minute = date.getMinutes().toString().padStart(2, "0");
+  const second = date.getSeconds().toString().padStart(2, "0");
+
+  if (onlyYearMonthDay) return `${year}-${month}-${day}`;
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 }
 
 export function createNewTaskString(title: string | undefined, date: string, id: number): string {
@@ -72,16 +74,16 @@ export function createNewTaskString(title: string | undefined, date: string, id:
 
 function addNewTask(event: Event): void {
   event.preventDefault();
-
   const textInputTask: HTMLInputElement | null = document.querySelector("[name='manage-task__textInput']");
   if (!checkInputValidity(textInputTask)) return;
 
+  const date = new Date();
   const id: number = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-  const newTask: string = createNewTaskString(textInputTask?.value, getYearMonthDayString(), id);
+  const newTask: string = createNewTaskString(textInputTask?.value, getFormattedDate(date), id);
 
   taskArray.push({
     title: textInputTask?.value,
-    dueDate: getYearMonthDayString(),
+    dueDate: getFormattedDate(date),
     id: id,
   });
 
@@ -107,7 +109,7 @@ function addNewComment(event: Event): void {
   if (!checkInputValidity(inputComment)) return;
 
   const date = new Date();
-  const actualDate: string = `${getYearMonthDayString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  const actualDate: string = `${getFormattedDate(date)}}`;
   const newComment: string = `
   <p class="comment">
     ${actualDate}. ${inputAuthor?.value}:${inputComment?.value}

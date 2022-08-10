@@ -1,4 +1,5 @@
-import { listTask, checkInputValidity, clearInputField } from "./add-comment-and-task";
+import { checkInputValidity, clearInputField } from "./add-comment-and-task";
+import { listTask } from "./init";
 
 function addNewSubtask(event: Event): void {
   if (!(event?.target as Element)?.classList.contains("task__ad-subtask")) {
