@@ -82,7 +82,7 @@ export function addNewTask(event: Event): void {
 
   taskArray.push({
     title: textInputTask?.value,
-    dueDate: getFormattedDate(date),
+    dueDate: getFormattedDate(date, true),
     id: id,
   });
 
