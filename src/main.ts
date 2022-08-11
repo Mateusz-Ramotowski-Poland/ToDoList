@@ -7,6 +7,7 @@ export const btnAddTask: HTMLButtonElement | null = document.querySelector(".man
 export const btnSortArray = document.querySelector(".manage-task__sort-tasks");
 
 export const taskArray: Task[] = JSON.parse(localStorage.getItem("tasks") ?? "[]");
+export const btnFilter: HTMLButtonElement | null = document.querySelector(".manage-task__btn-filter");
 
 renderTasks(taskArray);
 addAllEventListeners();
