@@ -1,7 +1,7 @@
 import { listTask, taskArray } from "./main";
 import { Task, Comment } from "./interfaces";
 import { findIndexOfCurrentTask } from "./change-due-date";
-import { createNewSubtaskString } from "./add-subtask";
+import { createNewSubtaskTemplate } from "./add-subtask";
 
 export function saveTasksInLocalStorage(tasks: Task[]) {
   localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -35,14 +35,9 @@ function getFormattedDate(date: Date, onlyYearMonthDay: boolean = false): string
 }
 
 export function createNewTaskString({ title, dueDate, id, comments, subtasks, done }: Task): string {
-  let commentsString = "";
-  for (const comment of comments) {
-    commentsString += createNewCommentString(comment);
-  }
-  let subtasksString = "";
-  for (const subtask of subtasks) {
-    subtasksString += createNewSubtaskString(subtask);
-  }
+  const commentsString = comments.map((comment) => createNewCommentTemplate(comment)).join("");
+
+  const subtasksString = subtasks.reduce((subtasks, subtask) => subtasks + createNewSubtaskTemplate(subtask), "");
 
   return `
 <div class="task" data-id=${id}>
@@ -113,7 +108,7 @@ export function addNewTask(event: Event): void {
   saveTasksInLocalStorage(taskArray);
 }
 
-export function createNewCommentString({ author, comment, date }: Comment) {
+export function createNewCommentTemplate({ author, comment, date }: Comment) {
   return `
   <p class="comment">
     ${date}. ${author}:${comment}
@@ -143,7 +138,7 @@ export function addNewComment(event: Event): void {
     date: getFormattedDate(date),
   };
 
-  const newCommentString = createNewCommentString(newComment);
+  const newCommentString = createNewCommentTemplate(newComment);
   comments?.insertAdjacentHTML("beforeend", newCommentString);
 
   const indexOfChangedTask = findIndexOfCurrentTask(currentTask);
