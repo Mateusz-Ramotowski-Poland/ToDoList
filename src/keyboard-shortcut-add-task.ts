@@ -1,10 +1,7 @@
 import { btnAddTask } from "./main";
 
 export function addTaskUsingKeyboard(event: KeyboardEvent) {
-  if (!(event.ctrlKey && (event.key === "v" || event.key === "v"))) return;
+  if (!(event.ctrlKey && (event.key === "m" || event.key === "M"))) return;
 
-  btnAddTask?.dispatchEvent("click");
-  //condition works
-  // now create event
-  console.dir(event);
+  btnAddTask?.click();
 }
