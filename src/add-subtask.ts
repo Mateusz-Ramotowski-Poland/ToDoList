@@ -5,7 +5,7 @@ import { findIndexOfCurrentTask } from "./change-due-date";
 import { Subtask } from "./interfaces";
 import { createIdNumber } from "./add-comment-and-task";
 
-export function createNewSubtaskString(subtask: Subtask) {
+export function createNewSubtaskTemplate(subtask: Subtask) {
   return `
   <div class="subtask" data-id='${subtask.id}'>
     <p>${subtask.subtask}</p>
@@ -26,7 +26,7 @@ export function addNewSubtask(event: Event): void {
   const subtasksContainer: HTMLInputElement | null = currentTask?.querySelector(".task__subtasks") || null;
 
   const id = createIdNumber();
-  const newSubtask = createNewSubtaskString({ subtask: subtaskInput?.value as string, done: false, id: id });
+  const newSubtask = createNewSubtaskTemplate({ subtask: subtaskInput?.value as string, done: false, id: id });
   subtasksContainer?.insertAdjacentHTML("afterbegin", newSubtask);
 
   const indexOfChangedTask = findIndexOfCurrentTask(currentTask);
