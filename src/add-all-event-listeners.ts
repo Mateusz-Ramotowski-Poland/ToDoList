@@ -14,8 +14,8 @@ export function addAllEventListeners() {
   listTask?.addEventListener("click", addNewComment);
   listTask?.addEventListener("click", addNewSubtask);
   listTask?.addEventListener("input", changeTaskDueDate);
-  btnSortArray?.addEventListener("click", function () {
-    renderTasks(sortTasks(actualTaskArray));
+  btnSortArray?.addEventListener("click", function (event) {
+    renderTasks(sortTasks(actualTaskArray, event));
   });
   listTask?.addEventListener("input", changeTaskCheckboxValue);
   listTask?.addEventListener("input", changeSubtaskCheckboxValue);

@@ -1,14 +1,33 @@
 import { Task } from "./interfaces";
 import { getFormattedDate } from "./add-comment-and-task";
 
-export function sortTasks(tasks: Task[]): Task[] {
-  return tasks.sort(function (a: Task, b: Task) {
-    const taskADueDate = a.dueDate.toUpperCase();
-    const taskeBDueDate = b.dueDate.toUpperCase();
-    if (taskADueDate < taskeBDueDate) return -1;
-    if (taskADueDate > taskeBDueDate) return 1;
-    return 0;
-  });
+export function sortTasks(tasks: Task[], event): Task[] {
+  let isButtonTextChangedNewly = false;
+
+  if (event.target.textContent === "Sort tasks ascending") {
+    event.target.textContent = "Sort tasks descending";
+    isButtonTextChangedNewly = true;
+
+    return tasks.sort(function (a: Task, b: Task) {
+      const taskADueDate = a.dueDate.toUpperCase();
+      const taskeBDueDate = b.dueDate.toUpperCase();
+      if (taskADueDate < taskeBDueDate) return -1;
+      if (taskADueDate > taskeBDueDate) return 1;
+      return 0;
+    });
+  }
+
+  if (event.target.textContent === "Sort tasks descending" && isButtonTextChangedNewly === false) {
+    event.target.textContent = "Sort tasks ascending";
+
+    return tasks.sort(function (a: Task, b: Task) {
+      const taskADueDate = a.dueDate.toUpperCase();
+      const taskeBDueDate = b.dueDate.toUpperCase();
+      if (taskADueDate > taskeBDueDate) return -1;
+      if (taskADueDate < taskeBDueDate) return 1;
+      return 0;
+    });
+  }
 }
 
 export function filterTasks(tasks: Task[], event: Event) {
