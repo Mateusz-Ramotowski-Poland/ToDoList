@@ -3,12 +3,13 @@ import { taskArray } from "./main";
 import { saveTasksInLocalStorage } from "./add-comment-and-task";
 import { findIndexOfCurrentTask } from "./change-due-date";
 import { Subtask } from "./interfaces";
+import { createIdNumber } from "./add-comment-and-task";
 
 export function createNewSubtaskString(subtask: Subtask) {
   return `
-  <div class="subtask">
+  <div class="subtask" data-id='${subtask.id}'>
     <p>${subtask.subtask}</p>
-    <input type="checkbox" name="task__checkbox" ${subtask.done === true ? "checked" : ""}/>
+    <input type="checkbox" name="task__checkbox--subtask" ${subtask.done === true ? "checked" : ""}/>
   </div>
     `;
 }
@@ -24,11 +25,12 @@ export function addNewSubtask(event: Event): void {
   if (!checkInputValidity(subtaskInput)) return;
   const subtasksContainer: HTMLInputElement | null = currentTask?.querySelector(".task__subtasks") || null;
 
-  const newSubtask = createNewSubtaskString({ subtask: subtaskInput?.value as string, done: false });
+  const id = createIdNumber();
+  const newSubtask = createNewSubtaskString({ subtask: subtaskInput?.value as string, done: false, id: id });
   subtasksContainer?.insertAdjacentHTML("afterbegin", newSubtask);
 
   const indexOfChangedTask = findIndexOfCurrentTask(currentTask);
-  taskArray[indexOfChangedTask].subtasks.push({ subtask: subtaskInput?.value as string, done: false });
+  taskArray[indexOfChangedTask].subtasks.push({ subtask: subtaskInput?.value as string, done: false, id: id });
 
   clearInputField(subtaskInput);
   saveTasksInLocalStorage(taskArray);

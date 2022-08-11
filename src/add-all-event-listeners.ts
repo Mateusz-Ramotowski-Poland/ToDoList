@@ -3,6 +3,7 @@ import { addNewSubtask } from "./add-subtask";
 import { changeTaskDueDate } from "./change-due-date";
 import { sortTasks } from "./sort-filter-tasks";
 import { renderTasks } from "./render-tasks";
+import { changeTaskCheckboxValue, changeSubtaskCheckboxValue } from "./change-checkboxes";
 
 import { listTask, btnAddTask, btnSortArray, taskArray } from "./main";
 
@@ -14,4 +15,6 @@ export function addAllEventListeners() {
   btnSortArray?.addEventListener("click", function () {
     renderTasks(sortTasks(taskArray));
   });
+  listTask?.addEventListener("input", changeTaskCheckboxValue);
+  listTask?.addEventListener("input", changeSubtaskCheckboxValue);
 }

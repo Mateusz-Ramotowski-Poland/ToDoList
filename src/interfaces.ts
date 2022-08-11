@@ -7,13 +7,14 @@ export interface Comment {
 export interface Subtask {
   subtask: string;
   done: boolean;
+  id: number;
 }
 
 export interface Task {
   title: string | undefined;
   dueDate: string;
   id: number;
-  done: false;
+  done: boolean;
   comments: Comment[];
   subtasks: Subtask[];
 }
