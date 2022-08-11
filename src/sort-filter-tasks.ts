@@ -43,5 +43,11 @@ export function filterTasks(tasks: Task[], event: Event) {
     toDate.value = actualdate;
   }
 
+  if (fromDate.value > toDate.value) {
+    const temp = fromDate.value;
+    fromDate.value = toDate.value;
+    toDate.value = temp;
+  }
+
   return tasks.filter((el) => el.dueDate >= fromDate.value && el.dueDate <= toDate.value);
 }
