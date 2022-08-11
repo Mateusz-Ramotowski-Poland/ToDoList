@@ -1,12 +1,11 @@
-export interface Task {
-  title: string | undefined;
-  dueDate: string;
-  id: number;
-}
+import { listTask, taskArray } from "./main";
+import { Task, Comment } from "./interfaces";
+import { findIndexOfCurrentTask } from "./change-due-date";
+import { createNewSubtaskTemplate } from "./add-subtask";
 
-const btnAddTask: HTMLButtonElement | null = document.querySelector(".manage-task__btn-add-task");
-export const listTask: HTMLUListElement | null = document.querySelector(".tasks");
-export const taskArray: Task[] = [];
+export function saveTasksInLocalStorage(tasks: Task[]) {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
 export function checkInputValidity(input: HTMLInputElement | null | undefined): boolean {
   if (!input?.checkValidity()) {
@@ -22,10 +21,8 @@ export function clearInputField(input: HTMLInputElement | null) {
     input.value = "";
   }
 }
-function getFormattedDate(
-  date: Date,
-  onlyYearMonthDay: boolean = false
-): string {
+
+function getFormattedDate(date: Date, onlyYearMonthDay: boolean = false): string {
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
   const day = date.getDate().toString().padStart(2, "0");
@@ -37,17 +34,21 @@ function getFormattedDate(
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 }
 
-export function createNewTaskString(title: string | undefined, date: string, id: number): string {
+export function createNewTaskString({ title, dueDate, id, comments, subtasks, done }: Task): string {
+  const commentsString = comments.map((comment) => createNewCommentTemplate(comment)).join("");
+  const subtasksString = subtasks.map((subtask) => createNewSubtaskTemplate(subtask)).join("");
+
   return `
 <div class="task" data-id=${id}>
   <div class="task__main">
     <h2 class="task__title">${title}</h2>
-    <input type="checkbox" name="task__checkbox" />
-    <input type="date" name="task__date" value="${date}" />
+    <input type="checkbox" name="task__checkbox" ${done === true ? "checked" : ""}/>
+    <input type="date" name="task__date" value="${dueDate}" />
     <button name="task__photo" type="submit">Upload photo </button>
   </div>
 
   <div class="task__subtasks">
+    ${subtasksString}
     <form>
       <input type="text" name="task_subtask-desciption" required minlength="4" />
       <button type="submit" class="task__ad-subtask">Add subtask</button>
@@ -71,62 +72,50 @@ export function createNewTaskString(title: string | undefined, date: string, id:
     />
     <button class="task__btn-add-comment" type="submit">Add comment</button>
   </form>
-  <div class="comments"></div>
+  <div class="comments">
+    ${commentsString}
+  </div>
 </div>
   `;
 }
 
-  const date = new Date();
-  const newTask: string = `
-  <div class="task">
-          <div class="task__main">
-                    <h2 class="task__title">${textInputTask?.value}</h2>
-                    <input type="checkbox"  class="task__checkbox" />
-                    <input type="date" class="task__date" value='${getFormattedDate(
-                      date,
-                      true
-                    )}'/>
-                    <button class="task__photo">Upload photo</button>
-          </div>
-
-                  <div class="task__subtasks">
-                    <input type="text" />
-                    <button>Add subtask</button>
-                  </div>
-
-                  <form class="task__comments">
-                    <input
-                      type="text"
-                      placeholder="Author"
-                      required
-                      minlength="4"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Comment"
-                      required
-                      minlength="4"
-                    />
-                    <button class="task__btn-add-comment">Add comment</button>
-                  </form>
-            <div class="comments">
-
-        </div>
-  </div>
-    `;
-
-  taskArray.push({
-    title: textInputTask?.value,
-    dueDate: getYearMonthDayString(),
-    id: id,
-  });
-
-  listTask?.insertAdjacentHTML("beforeend", newTask);
-  clearInputField(textInputTask);
+export function createIdNumber() {
+  return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 }
-btnAddTask?.addEventListener("click", addNewTask);
 
-function addNewComment(event: Event): void {
+export function addNewTask(event: Event): void {
+  event.preventDefault();
+  const textInputTask: HTMLInputElement | null = document.querySelector("[name='manage-task__textInput']");
+  if (!checkInputValidity(textInputTask)) return;
+
+  const date = new Date();
+  const id = createIdNumber();
+
+  const newTask = {
+    title: textInputTask?.value,
+    dueDate: getFormattedDate(date, true),
+    id: id,
+    comments: [],
+    subtasks: [],
+    done: false,
+  };
+  taskArray.push(newTask);
+  const newTaskString: string = createNewTaskString(newTask);
+
+  listTask?.insertAdjacentHTML("beforeend", newTaskString);
+  clearInputField(textInputTask);
+  saveTasksInLocalStorage(taskArray);
+}
+
+export function createNewCommentTemplate({ author, comment, date }: Comment) {
+  return `
+  <p class="comment">
+    ${date}. ${author}:${comment}
+  </p>
+  `;
+}
+
+export function addNewComment(event: Event): void {
   if (!(event?.target as Element)?.classList.contains("task__btn-add-comment")) {
     return;
   }
@@ -142,16 +131,20 @@ function addNewComment(event: Event): void {
   if (!checkInputValidity(inputComment)) return;
 
   const date = new Date();
-  const actualDate: string = `${getFormattedDate(date)}`;
+  const newComment: Comment = {
+    author: inputAuthor?.value as string,
+    comment: inputComment?.value as string,
+    date: getFormattedDate(date),
+  };
 
-  const newComment: string = `
-  <p class="comment">
-    ${actualDate}. ${inputAuthor?.value}:${inputComment?.value}
-  </p>
-    `;
+  const newCommentString = createNewCommentTemplate(newComment);
+  comments?.insertAdjacentHTML("beforeend", newCommentString);
 
-  comments?.insertAdjacentHTML("beforeend", newComment);
+  const indexOfChangedTask = findIndexOfCurrentTask(currentTask);
+
+  taskArray[indexOfChangedTask].comments.push(newComment);
+
   clearInputField(inputAuthor);
   clearInputField(inputComment);
+  saveTasksInLocalStorage(taskArray);
 }
-listTask?.addEventListener("click", addNewComment);
