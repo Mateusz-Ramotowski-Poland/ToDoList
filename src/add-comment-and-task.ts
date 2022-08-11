@@ -36,8 +36,7 @@ function getFormattedDate(date: Date, onlyYearMonthDay: boolean = false): string
 
 export function createNewTaskString({ title, dueDate, id, comments, subtasks, done }: Task): string {
   const commentsString = comments.map((comment) => createNewCommentTemplate(comment)).join("");
-
-  const subtasksString = subtasks.reduce((subtasks, subtask) => subtasks + createNewSubtaskTemplate(subtask), "");
+  const subtasksString = subtasks.map((subtask) => createNewSubtaskTemplate(subtask)).join("");
 
   return `
 <div class="task" data-id=${id}>

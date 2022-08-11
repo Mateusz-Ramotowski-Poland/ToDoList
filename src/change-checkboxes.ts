@@ -3,7 +3,7 @@ import { taskArray } from "./main";
 import { saveTasksInLocalStorage } from "./add-comment-and-task";
 
 export function changeTaskCheckboxValue(event: Event) {
-  if (!((event.target as Element)?.getAttribute("name") === "task__checkbox")) {
+  if ((event.target as Element)?.getAttribute("name") !== "task__checkbox") {
     return;
   }
 
@@ -21,7 +21,7 @@ function findIndexOfSubtask(indexOfChangedTask: number, currentSubtaskCheckbox: 
 }
 
 export function changeSubtaskCheckboxValue(event: Event) {
-  if (!((event.target as Element)?.getAttribute("name") === "task__checkbox--subtask")) {
+  if ((event.target as Element)?.getAttribute("name") !== "task__checkbox--subtask") {
     return;
   }
 
