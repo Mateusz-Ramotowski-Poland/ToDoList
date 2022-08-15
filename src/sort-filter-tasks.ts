@@ -1,33 +1,26 @@
 import { Task } from "./interfaces";
 import { getFormattedDate } from "./add-comment-and-task";
+import { btnSortArray } from "./main";
 
-export function sortTasks(tasks: Task[], event): Task[] {
-  let isButtonTextChangedNewly = false;
+let btnSortingState = "descending sorting";
 
-  if (event.target.textContent === "Sort tasks ascending") {
-    event.target.textContent = "Sort tasks descending";
-    isButtonTextChangedNewly = true;
-
-    return tasks.sort(function (a: Task, b: Task) {
-      const taskADueDate = a.dueDate.toUpperCase();
-      const taskeBDueDate = b.dueDate.toUpperCase();
-      if (taskADueDate < taskeBDueDate) return -1;
-      if (taskADueDate > taskeBDueDate) return 1;
-      return 0;
-    });
+export function sortTasks(tasks: Task[]): Task[] {
+  if (btnSortingState === "descending sorting") {
+    btnSortingState = "ascending sorting";
+    (btnSortArray as HTMLButtonElement).textContent = "Sort ascending";
+  } else {
+    btnSortingState = "descending sorting";
+    (btnSortArray as HTMLButtonElement).textContent = "Sort descending";
   }
 
-  if (event.target.textContent === "Sort tasks descending" && isButtonTextChangedNewly === false) {
-    event.target.textContent = "Sort tasks ascending";
+  return tasks.sort(function (a: Task, b: Task) {
+    const taskADueDate = a.dueDate.toUpperCase();
+    const taskBDueDate = b.dueDate.toUpperCase();
 
-    return tasks.sort(function (a: Task, b: Task) {
-      const taskADueDate = a.dueDate.toUpperCase();
-      const taskeBDueDate = b.dueDate.toUpperCase();
-      if (taskADueDate > taskeBDueDate) return -1;
-      if (taskADueDate < taskeBDueDate) return 1;
-      return 0;
-    });
-  }
+    if (taskADueDate < taskBDueDate) return btnSortingState === "descending sorting" ? -1 : 1;
+    if (taskADueDate > taskBDueDate) return btnSortingState === "descending sorting" ? 1 : -1;
+    return 0;
+  });
 }
 
 export function filterTasks(tasks: Task[], event: Event) {
@@ -47,6 +40,13 @@ export function filterTasks(tasks: Task[], event: Event) {
     const temp = fromDate.value;
     fromDate.value = toDate.value;
     toDate.value = temp;
+  }
+
+  if (btnSortingState === "ascending sorting") {
+    return tasks
+      .map((x) => x)
+      .reverse()
+      .filter((el) => el.dueDate >= fromDate.value && el.dueDate <= toDate.value);
   }
 
   return tasks.filter((el) => el.dueDate >= fromDate.value && el.dueDate <= toDate.value);

@@ -5,9 +5,10 @@ import { sortTasks, filterTasks } from "./sort-filter-tasks";
 import { renderTasks } from "./render-tasks";
 import { changeTaskCheckboxValue, changeSubtaskCheckboxValue } from "./change-checkboxes";
 import { addTaskUsingKeyboard } from "./keyboard-shortcut-add-task";
+import { Task } from "./interfaces";
+import { listTask, btnAddTask, btnSortArray, btnFilter } from "./main";
 
-import { listTask, btnAddTask, btnSortArray, taskArray, btnFilter } from "./main";
-
+export const taskArray: Task[] = JSON.parse(localStorage.getItem("tasks") ?? "[]");
 let actualTaskArray = taskArray;
 
 export function addAllEventListeners() {
@@ -16,7 +17,7 @@ export function addAllEventListeners() {
   listTask?.addEventListener("click", addNewSubtask);
   listTask?.addEventListener("input", changeTaskDueDate);
   btnSortArray?.addEventListener("click", function (event) {
-    renderTasks(sortTasks(actualTaskArray, event));
+    renderTasks(sortTasks(actualTaskArray));
   });
   listTask?.addEventListener("input", changeTaskCheckboxValue);
   listTask?.addEventListener("input", changeSubtaskCheckboxValue);

@@ -1,5 +1,5 @@
 import { checkInputValidity, clearInputField } from "./add-comment-and-task";
-import { taskArray } from "./main";
+import { taskArray } from "./add-all-event-listeners";
 import { saveTasksInLocalStorage } from "./add-comment-and-task";
 import { findIndexOfCurrentTask } from "./change-due-date";
 import { Subtask } from "./interfaces";

@@ -1,4 +1,5 @@
-import { listTask, taskArray } from "./main";
+import { listTask } from "./main";
+import { taskArray } from "./add-all-event-listeners";
 import { Task, Comment } from "./interfaces";
 import { findIndexOfCurrentTask } from "./change-due-date";
 import { createNewSubtaskTemplate } from "./add-subtask";
