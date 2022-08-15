@@ -2,7 +2,7 @@ import { addNewTask, addNewComment } from "./add-comment-and-task";
 import { addNewSubtask } from "./add-subtask";
 import { changeTaskDueDate } from "./change-due-date";
 import { sortTasks, filterTasks } from "./sort-filter-tasks";
-import { renderTasks } from "./render-tasks";
+import { renderTasks } from "./render-tasks-statistics";
 import { changeTaskCheckboxValue, changeSubtaskCheckboxValue } from "./change-checkboxes";
 import { addTaskUsingKeyboard } from "./keyboard-shortcut-add-task";
 import { Task } from "./interfaces";

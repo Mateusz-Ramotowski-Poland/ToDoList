@@ -22,4 +22,6 @@ export interface Task {
 export interface Statistics {
   numberOfComments: number;
   numberOfCommentsToday: number;
+  doneTasks: number;
+  undoneTasks: number;
 }
