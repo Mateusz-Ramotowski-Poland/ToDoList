@@ -8,7 +8,7 @@ export const btnSortArray: HTMLButtonElement | null = document.querySelector(".m
 
 export const btnFilter: HTMLButtonElement | null = document.querySelector(".manage-task__btn-filter");
 
-const statistics = new Statistics(taskArray);
+export const statistics = new Statistics(taskArray);
 renderStatistics(statistics);
 renderTasks(taskArray);
 addAllEventListeners();

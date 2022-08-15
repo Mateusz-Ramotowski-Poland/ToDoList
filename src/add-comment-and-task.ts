@@ -1,8 +1,9 @@
-import { listTask } from "./main";
+import { listTask, statistics } from "./main";
 import { taskArray } from "./add-all-event-listeners";
 import { Task, Comment } from "./interfaces";
 import { findIndexOfCurrentTask } from "./change-due-date";
 import { createNewSubtaskTemplate } from "./add-subtask";
+import { renderStatistics } from "./render-tasks-statistics";
 
 export function saveTasksInLocalStorage(tasks: Task[]) {
   localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -106,6 +107,8 @@ export function addNewTask(event: Event): void {
   listTask?.insertAdjacentHTML("beforeend", newTaskString);
   clearInputField(textInputTask);
   saveTasksInLocalStorage(taskArray);
+  statistics.addOneUndoneTask();
+  renderStatistics(statistics);
 }
 
 export function createNewCommentTemplate({ author, comment, date }: Comment) {
@@ -143,9 +146,12 @@ export function addNewComment(event: Event): void {
 
   const indexOfChangedTask = findIndexOfCurrentTask(currentTask);
 
-  taskArray[indexOfChangedTask].comments.push(newComment);
+  const commentsArrOfChangedTask = taskArray[indexOfChangedTask].comments;
+  commentsArrOfChangedTask.push(newComment);
 
   clearInputField(inputAuthor);
   clearInputField(inputComment);
   saveTasksInLocalStorage(taskArray);
+  statistics.addComments(commentsArrOfChangedTask[commentsArrOfChangedTask.length - 1]);
+  renderStatistics(statistics);
 }

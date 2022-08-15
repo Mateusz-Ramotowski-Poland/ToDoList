@@ -18,10 +18,3 @@ export interface Task {
   comments: Comment[];
   subtasks: Subtask[];
 }
-
-export interface Statistics {
-  numberOfComments: number;
-  numberOfCommentsToday: number;
-  doneTasks: number;
-  undoneTasks: number;
-}

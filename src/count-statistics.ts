@@ -1,4 +1,4 @@
-import { Task } from "./interfaces";
+import { Task, Comment } from "./interfaces";
 import { getFormattedDate } from "./add-comment-and-task";
 
 export class Statistics {
@@ -58,5 +58,26 @@ export class Statistics {
   }
   getDoneTasks() {
     return this.#doneTasks;
+  }
+
+  addOneUndoneTask() {
+    this.#undoneTasks++;
+  }
+  subtractOneUndoneTask() {
+    this.#undoneTasks--;
+  }
+  addOneDoneTask() {
+    this.#doneTasks++;
+  }
+  subtractOneDoneTask() {
+    this.#doneTasks--;
+  }
+
+  addComments(comment: Comment) {
+    this.#comments++;
+    const today = getFormattedDate(new Date(), true);
+    if (comment.date.slice(0, 10) === today) {
+      this.#commentsToday++;
+    }
   }
 }

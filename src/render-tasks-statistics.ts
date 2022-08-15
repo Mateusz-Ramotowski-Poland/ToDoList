@@ -1,6 +1,7 @@
 import { listTask } from "./main";
 import { createNewTaskString } from "./add-comment-and-task";
 import { Task } from "./interfaces";
+import { Statistics } from "./count-statistics";
 
 const commentsTag = document.querySelector(".statistics__comments") as HTMLElement;
 const commentsTodayTag = document.querySelector(".statistics__comments-today") as HTMLElement;
@@ -18,7 +19,7 @@ export function renderTasks(tasks: Task[]): void {
   }
 }
 
-export function renderStatistics(statistics) {
+export function renderStatistics(statistics: Statistics) {
   commentsTag.textContent = "" + statistics.getComments();
   commentsTodayTag.textContent = "" + statistics.getCommentsToday();
   doneTasksTag.textContent = "" + statistics.getDoneTasks();
