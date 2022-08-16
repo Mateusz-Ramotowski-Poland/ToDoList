@@ -6,7 +6,7 @@ export class Statistics {
   #commentsToday = 0;
   #doneTasks = 0;
   #undoneTasks = 0;
-  #Commentators = [];
+  #commentators = [];
   #mostActiveCommentator = "";
 
   constructor(taskArray: Task[]) {
@@ -51,24 +51,19 @@ export class Statistics {
     return { doneTasks: doneTasks, undoneTasks: undoneTasks };
   }
 
-  addComentator(comment: Comment) {
-    const indexOfAuthor = this.#Commentators.findIndex((el) => el.author === comment.author);
+  addComentator(comment) {
+    const indexOfAuthor = this.#commentators.findIndex((el) => el.author === comment.author);
     if (indexOfAuthor === -1) {
-      this.#Commentators.push({ author: comment.author, numberOfComments: 1 });
+      this.#commentators.push({ author: comment.author, numberOfComments: 1 });
     } else {
-      this.#Commentators[indexOfAuthor].numberOfComments++;
+      this.#commentators[indexOfAuthor].numberOfComments++;
     }
   }
 
   addComentators(tasks: Task[]) {
     for (const task of tasks) {
       for (const comment of task.comments) {
-        const indexOfAuthor = this.#Commentators.findIndex((el) => el.author === comment.author);
-        if (indexOfAuthor === -1) {
-          this.#Commentators.push({ author: comment.author, numberOfComments: 1 });
-        } else {
-          this.#Commentators[indexOfAuthor].numberOfComments++;
-        }
+        this.addComentator(comment);
       }
     }
   }
@@ -76,7 +71,7 @@ export class Statistics {
   evaluateMostActiveCommentator(tasks: Task[]) {
     let mostActiveComentator = "";
     let theMostComments = 0;
-    for (const comentator of this.#Commentators) {
+    for (const comentator of this.#commentators) {
       if (comentator.numberOfComments > theMostComments) {
         mostActiveComentator = comentator.author;
         theMostComments = comentator.numberOfComments;
