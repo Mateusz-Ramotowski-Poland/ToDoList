@@ -38,7 +38,7 @@ export function getFormattedDate(date: Date, onlyYearMonthDay: boolean = false):
 
 export function createNewTaskTemplate({ title, dueDate, id, comments, subtasks, done }: Task): string {
   const commentsString = comments.map((comment) => createNewCommentTemplate(comment)).join("");
-  const subtasksString = subtasks.map((subtask) => createNewSubtaskTemplate(subtask)).join("");
+  const subtasksTemplate = subtasks.map((subtask) => createNewSubtaskTemplate(subtask)).join("");
 
   return `
 <div class="task" data-id=${id}>
@@ -50,7 +50,7 @@ export function createNewTaskTemplate({ title, dueDate, id, comments, subtasks, 
   </div>
 
   <div class="task__subtasks">
-    ${subtasksString}
+    ${subtasksTemplate}
     <form>
       <input type="text" name="task_subtask-desciption" required minlength="4" />
       <button type="submit" class="task__ad-subtask">Add subtask</button>

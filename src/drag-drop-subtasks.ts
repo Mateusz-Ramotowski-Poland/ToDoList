@@ -1,16 +1,16 @@
-export function prepareSubtaskForMoving(event) {
-  if (event.target.closest(".subtask") === null) return;
+export function moveSubtask(event) {
+  const clickedSubtaskDescription = event.target.closest(".subtask__description");
+  if (clickedSubtaskDescription === null) return;
 
-  const subtaskTag = event.target.closest(".subtask");
-  const initialSubtaskTagPosition = subtaskTag.closest(".task__subtasks");
-
-  subtaskTag.style.position = "absolute";
-  subtaskTag.style.zIndex = 100;
-  document.body.append(subtaskTag);
+  const clickedSubtask = clickedSubtaskDescription.closest(".subtask");
+  const initialClickedSubtaskPosition = clickedSubtask.closest(".task__subtasks");
+  clickedSubtask.style.position = "absolute";
+  clickedSubtask.style.zIndex = 100;
+  document.body.append(clickedSubtask);
 
   function moveAt(pageX, pageY) {
-    subtaskTag.style.left = pageX - subtaskTag.offsetWidth / 2 + "px";
-    subtaskTag.style.top = pageY - subtaskTag.offsetHeight / 2 + "px";
+    clickedSubtask.style.left = pageX - clickedSubtask.offsetWidth / 2 + "px";
+    clickedSubtask.style.top = pageY - clickedSubtask.offsetHeight / 2 + "px";
   }
 
   moveAt(event.pageX, event.pageY);
@@ -21,23 +21,24 @@ export function prepareSubtaskForMoving(event) {
 
   document.addEventListener("mousemove", onMouseMove);
 
-  subtaskTag.onmouseup = function (event) {
+  clickedSubtask.onmouseup = function (event) {
     const x = event.clientX;
     const y = event.clientY;
-    subtaskTag.style.zIndex = -1;
+    clickedSubtask.style.zIndex = -1;
     const newTask = document.elementFromPoint(x, y)?.closest(".task");
-    subtaskTag.style.zIndex = 0;
-    subtaskTag.style.position = "static";
+    clickedSubtask.style.zIndex = 0;
+    clickedSubtask.style.position = "relative";
+    clickedSubtask.style.top = "0px";
+    clickedSubtask.style.left = "0px";
 
     if (newTask === null || newTask === undefined) {
-      initialSubtaskTagPosition?.insertAdjacentElement("afterbegin", subtaskTag);
+      initialClickedSubtaskPosition?.insertAdjacentElement("afterbegin", clickedSubtask);
     } else {
-      const newTasksLIst = newTask?.querySelector(".task__subtasks");
-      newTasksLIst?.insertAdjacentElement("afterbegin", subtaskTag);
+      const newTasksList = newTask?.querySelector(".task__subtasks");
+      newTasksList?.insertAdjacentElement("afterbegin", clickedSubtask);
     }
 
-    subtaskTag.style.zIndex = 100;
     document.removeEventListener("mousemove", onMouseMove);
-    subtaskTag.onmouseup = null;
+    clickedSubtask.onmouseup = null;
   };
 }

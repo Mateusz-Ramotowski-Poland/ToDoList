@@ -7,7 +7,7 @@ import { changeTaskCheckboxValue, changeSubtaskCheckboxValue } from "./change-ch
 import { addTaskUsingKeyboard } from "./keyboard-shortcut-add-task";
 import { Task } from "./interfaces";
 import { listTask, btnAddTask, btnSortArray, btnFilter } from "./main";
-import { prepareSubtaskForMoving } from "./drag-drop-subtasks";
+import { moveSubtask } from "./drag-drop-subtasks";
 
 export const taskArray: Task[] = JSON.parse(localStorage.getItem("tasks") ?? "[]");
 let actualTaskArray = taskArray;
@@ -20,12 +20,12 @@ export function addAllEventListeners() {
   btnSortArray?.addEventListener("click", function (event) {
     renderTasks(sortTasks(actualTaskArray));
   });
-  listTask?.addEventListener("input", changeTaskCheckboxValue);
-  listTask?.addEventListener("input", changeSubtaskCheckboxValue);
+  listTask?.addEventListener("mousedown", moveSubtask);
+  listTask?.addEventListener("click", changeTaskCheckboxValue);
+  listTask?.addEventListener("click", changeSubtaskCheckboxValue);
   btnFilter?.addEventListener("click", function (event) {
     actualTaskArray = filterTasks(taskArray, event);
     renderTasks(actualTaskArray);
   });
   window.addEventListener("keydown", addTaskUsingKeyboard);
-  listTask?.addEventListener("mousedown", prepareSubtaskForMoving);
 }
