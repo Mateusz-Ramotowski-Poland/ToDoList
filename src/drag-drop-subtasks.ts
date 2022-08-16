@@ -2,25 +2,17 @@ import { saveTasksInLocalStorage } from "./add-comment-and-task";
 import { Task } from "./interfaces";
 import { taskArray } from "./add-all-event-listeners";
 
-function findLocationInArray(tasks: Task[], clickedSubtask: HTMLElement) {
-  const clickedTask = clickedSubtask.closest(".task");
-  /*   console.log(clickedTask); */
-  const clickedTaskIndex = tasks.findIndex((task) => task.id === parseInt(clickedTask?.dataset.id));
-  /*   console.log(clickedTaskIndex);
-  const taskInArray = taskArray[clickedTaskIndex];
-  console.log(taskInArray); */
-  const clickedSubtaskIndex = taskArray[clickedTaskIndex].subtasks.findIndex(
-    (subtask) => subtask.id === parseInt(clickedSubtask?.dataset.id)
-  );
-  /* console.log(clickedSubtaskIndex); */
-  /*   console.log(clickedTask?.dataset.id);
-  console.log(typeof clickedTask?.dataset.id); */
-  console.log({ taskIndex: clickedTaskIndex, subtaskIndex: clickedSubtaskIndex });
-  return { task: clickedTaskIndex, subtask: clickedSubtaskIndex };
+function getTaskIndex(tasks: Task[], clickedTask: HTMLElement) {
+  return tasks.findIndex((task) => task.id === parseInt(clickedTask?.dataset.id as string));
 }
 
-function getTaskIndex(tasks: Task[], clickedTask: HTMLElement) {
-  return tasks.findIndex((task) => task.id === parseInt(clickedTask?.dataset.id));
+function findLocationInArray(tasks: Task[], clickedSubtask: HTMLElement) {
+  const clickedTask = clickedSubtask.closest(".task") as HTMLElement;
+  const clickedTaskIndex = tasks.findIndex((task) => task.id === parseInt(clickedTask?.dataset.id as string));
+  const clickedSubtaskIndex = taskArray[clickedTaskIndex].subtasks.findIndex(
+    (subtask) => subtask.id === parseInt(clickedSubtask?.dataset.id as string)
+  );
+  return { task: clickedTaskIndex, subtask: clickedSubtaskIndex };
 }
 
 export function moveSubtask(event) {
@@ -59,18 +51,14 @@ export function moveSubtask(event) {
     clickedSubtask.style.top = "0px";
     clickedSubtask.style.left = "0px";
 
-    console.log(newTask);
     if (newTask === initialTask) {
       initialClickedSubtaskPosition?.insertAdjacentElement("afterbegin", clickedSubtask);
-      console.log("same");
     } else {
       const newTasksList = newTask?.querySelector(".task__subtasks");
-      console.log(newTasksList);
+
       newTasksList?.insertAdjacentElement("afterbegin", clickedSubtask);
-      taskArray[removeLocation.task].subtasks.splice(removeLocation.subtask, 1); // delete one item from arr
-      console.log(clickedSubtask);
-      console.dir(clickedSubtask);
-      console.log(clickedSubtask.querySelector("input").checked);
+      taskArray[removeLocation.task].subtasks.splice(removeLocation.subtask, 1);
+
       taskArray[getTaskIndex(taskArray, newTask)].subtasks.push({
         subtask: clickedSubtask.querySelector("p").textContent,
         done: clickedSubtask.querySelector("input").checked,

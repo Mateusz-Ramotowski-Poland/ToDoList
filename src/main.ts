@@ -12,4 +12,3 @@ export const statistics = new Statistics(taskArray);
 renderStatistics(statistics);
 renderTasks(taskArray);
 addAllEventListeners();
-console.log(taskArray);
