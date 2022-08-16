@@ -2,6 +2,8 @@ export function prepareSubtaskForMoving(event) {
   if (event.target.closest(".subtask") === null) return;
 
   const subtaskTag = event.target.closest(".subtask");
+  const initialSubtaskTagPosition = subtaskTag.closest(".task__subtasks");
+
   subtaskTag.style.position = "absolute";
   subtaskTag.style.zIndex = 100;
   document.body.append(subtaskTag);
@@ -22,9 +24,19 @@ export function prepareSubtaskForMoving(event) {
   subtaskTag.onmouseup = function (event) {
     const x = event.clientX;
     const y = event.clientY;
-    console.log(x, y);
-    console.log(document.elementFromPoint(x, y));
+    subtaskTag.style.zIndex = -1;
+    const newTask = document.elementFromPoint(x, y)?.closest(".task");
+    subtaskTag.style.zIndex = 0;
+    subtaskTag.style.position = "static";
 
+    if (newTask === null || newTask === undefined) {
+      initialSubtaskTagPosition?.insertAdjacentElement("afterbegin", subtaskTag);
+    } else {
+      const newTasksLIst = newTask?.querySelector(".task__subtasks");
+      newTasksLIst?.insertAdjacentElement("afterbegin", subtaskTag);
+    }
+
+    subtaskTag.style.zIndex = 100;
     document.removeEventListener("mousemove", onMouseMove);
     subtaskTag.onmouseup = null;
   };
