@@ -14,8 +14,8 @@ export class Statistics {
     this.#commentsToday = this.countCommentsToday(taskArray);
     this.#doneTasks = this.countUnodoneDoneTasks(taskArray).doneTasks;
     this.#undoneTasks = this.countUnodoneDoneTasks(taskArray).undoneTasks;
-    this.findComentators(taskArray);
-    this.#mostActiveCommentator = this.evaluateMostActiveCommentator(taskArray);
+    this.addComentators(taskArray);
+    this.evaluateMostActiveCommentator(taskArray);
   }
 
   countComments(tasks: Task[]): number {
@@ -51,15 +51,22 @@ export class Statistics {
     return { doneTasks: doneTasks, undoneTasks: undoneTasks };
   }
 
-  findComentators(tasks: Task[]) {
+  addComentator(comment: Comment) {
+    const indexOfAuthor = this.#Commentators.findIndex((el) => el.author === comment.author);
+    if (indexOfAuthor === -1) {
+      this.#Commentators.push({ author: comment.author, numberOfComments: 1 });
+    } else {
+      this.#Commentators[indexOfAuthor].numberOfComments++;
+    }
+  }
+
+  addComentators(tasks: Task[]) {
     for (const task of tasks) {
       for (const comment of task.comments) {
         const indexOfAuthor = this.#Commentators.findIndex((el) => el.author === comment.author);
         if (indexOfAuthor === -1) {
-          console.log("new");
           this.#Commentators.push({ author: comment.author, numberOfComments: 1 });
         } else {
-          console.log("old");
           this.#Commentators[indexOfAuthor].numberOfComments++;
         }
       }
@@ -76,7 +83,7 @@ export class Statistics {
       }
     }
 
-    return mostActiveComentator;
+    this.#mostActiveCommentator = mostActiveComentator;
   }
 
   getComments() {

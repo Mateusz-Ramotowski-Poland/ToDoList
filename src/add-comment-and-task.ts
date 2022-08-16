@@ -153,5 +153,8 @@ export function addNewComment(event: Event): void {
   clearInputField(inputComment);
   saveTasksInLocalStorage(taskArray);
   statistics.addComments(commentsArrOfChangedTask[commentsArrOfChangedTask.length - 1]);
+  statistics.addComentator(newComment);
+  statistics.evaluateMostActiveCommentator(taskArray);
+
   renderStatistics(statistics);
 }
