@@ -7,6 +7,7 @@ const commentsTag = document.querySelector(".statistics__comments") as HTMLEleme
 const commentsTodayTag = document.querySelector(".statistics__comments-today") as HTMLElement;
 const doneTasksTag = document.querySelector(".statistics__done-tasks") as HTMLElement;
 const undoneTasksTag = document.querySelector(".statistics__undone-tasks") as HTMLElement;
+const mostActiveComentatorTag = document.querySelector(".statistics__comentator") as HTMLElement;
 
 export function renderTasks(tasks: Task[]): void {
   if (listTask) {
@@ -24,4 +25,5 @@ export function renderStatistics(statistics: Statistics) {
   commentsTodayTag.textContent = "" + statistics.getCommentsToday();
   doneTasksTag.textContent = "" + statistics.getDoneTasks();
   undoneTasksTag.textContent = "" + statistics.getUndoneTasks();
+  mostActiveComentatorTag.textContent = "" + statistics.getMostActiveCommentator();
 }
