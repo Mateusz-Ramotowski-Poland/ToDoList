@@ -1,5 +1,5 @@
 import { listTask } from "./main";
-import { createNewTaskString } from "./add-comment-and-task";
+import { createNewTaskTemplate } from "./add-comment-and-task";
 import { Task } from "./interfaces";
 import { Statistics } from "./count-statistics";
 
@@ -15,7 +15,7 @@ export function renderTasks(tasks: Task[]): void {
   }
 
   for (const task of tasks) {
-    const newTaskString = createNewTaskString(task);
+    const newTaskString = createNewTaskTemplate(task);
     listTask?.insertAdjacentHTML("beforeend", newTaskString);
   }
 }

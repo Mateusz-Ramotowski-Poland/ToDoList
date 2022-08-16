@@ -36,7 +36,7 @@ export function getFormattedDate(date: Date, onlyYearMonthDay: boolean = false):
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 }
 
-export function createNewTaskString({ title, dueDate, id, comments, subtasks, done }: Task): string {
+export function createNewTaskTemplate({ title, dueDate, id, comments, subtasks, done }: Task): string {
   const commentsString = comments.map((comment) => createNewCommentTemplate(comment)).join("");
   const subtasksString = subtasks.map((subtask) => createNewSubtaskTemplate(subtask)).join("");
 
@@ -102,7 +102,7 @@ export function addNewTask(event: Event): void {
     done: false,
   };
   taskArray.push(newTask);
-  const newTaskString: string = createNewTaskString(newTask);
+  const newTaskString: string = createNewTaskTemplate(newTask);
 
   listTask?.insertAdjacentHTML("beforeend", newTaskString);
   clearInputField(textInputTask);
