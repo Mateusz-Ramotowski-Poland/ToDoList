@@ -4,6 +4,7 @@ import { changeTaskDueDate } from "./change-due-date";
 import { sortTasks, filterTasks } from "./sort-filter-tasks";
 import { renderTasks } from "./render-tasks";
 import { changeTaskCheckboxValue, changeSubtaskCheckboxValue } from "./change-checkboxes";
+import { addTaskUsingKeyboard } from "./keyboard-shortcut-add-task";
 import { Task } from "./interfaces";
 import { listTask, btnAddTask, btnSortArray, btnFilter } from "./main";
 
@@ -24,4 +25,5 @@ export function addAllEventListeners() {
     actualTaskArray = filterTasks(taskArray, event);
     renderTasks(actualTaskArray);
   });
+  window.addEventListener("keydown", addTaskUsingKeyboard);
 }
