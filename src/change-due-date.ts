@@ -1,5 +1,5 @@
 import { saveTasksInLocalStorage } from "./add-comment-and-task";
-import { taskArray } from "./main";
+import { taskArray } from "./add-all-event-listeners";
 
 export function findIndexOfCurrentTask(currentTask: Element | null): number {
   return taskArray.findIndex((el) => el.id.toString() === (currentTask as HTMLElement)?.dataset.id);

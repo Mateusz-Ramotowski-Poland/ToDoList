@@ -1,5 +1,5 @@
 import { findIndexOfCurrentTask } from "./change-due-date";
-import { taskArray } from "./main";
+import { taskArray } from "./add-all-event-listeners";
 import { saveTasksInLocalStorage } from "./add-comment-and-task";
 
 export function changeTaskCheckboxValue(event: Event) {

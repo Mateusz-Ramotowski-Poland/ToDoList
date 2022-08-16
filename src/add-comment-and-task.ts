@@ -1,4 +1,5 @@
-import { listTask, taskArray } from "./main";
+import { listTask } from "./main";
+import { taskArray } from "./add-all-event-listeners";
 import { Task, Comment } from "./interfaces";
 import { findIndexOfCurrentTask } from "./change-due-date";
 import { createNewSubtaskTemplate } from "./add-subtask";
@@ -22,7 +23,7 @@ export function clearInputField(input: HTMLInputElement | null) {
   }
 }
 
-function getFormattedDate(date: Date, onlyYearMonthDay: boolean = false): string {
+export function getFormattedDate(date: Date, onlyYearMonthDay: boolean = false): string {
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
   const day = date.getDate().toString().padStart(2, "0");
