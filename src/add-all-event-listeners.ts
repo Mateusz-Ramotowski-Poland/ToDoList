@@ -8,6 +8,7 @@ import { addTaskUsingKeyboard } from "./keyboard-shortcut-add-task";
 import { Task } from "./interfaces";
 import { listTask, btnAddTask, btnSortArray, btnFilter } from "./main";
 import { moveSubtask } from "./drag-drop-subtasks";
+import { uploadImage } from "./upload-image";
 
 export const taskArray: Task[] = JSON.parse(localStorage.getItem("tasks") ?? "[]");
 let actualTaskArray = taskArray;
@@ -28,4 +29,5 @@ export function addAllEventListeners() {
     renderTasks(actualTaskArray);
   });
   window.addEventListener("keydown", addTaskUsingKeyboard);
+  listTask?.addEventListener("change", uploadImage);
 }

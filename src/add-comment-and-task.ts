@@ -46,8 +46,10 @@ export function createNewTaskTemplate({ title, dueDate, id, comments, subtasks, 
     <h2 class="task__title">${title}</h2>
     <input type="checkbox" name="task__checkbox" ${done === true ? "checked" : ""}/>
     <input type="date" name="task__date" value="${dueDate}" />
-    <button name="task__photo" type="submit">Upload photo </button>
   </div>
+ 
+  <input type="file" name="upload-file"><br>
+  <img src="" height="100" width='100' alt="uploaded" hidden>
 
   <div class="task__subtasks">
     ${subtasksTemplate}

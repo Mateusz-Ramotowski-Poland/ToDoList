@@ -32,12 +32,12 @@ export function moveSubtask(event) {
   }
 
   moveAt(event.pageX, event.pageY);
-  function onMouseMove(event) {
+  function onMouseMove(event: MouseEvent) {
     moveAt(event.pageX, event.pageY);
   }
   document.addEventListener("mousemove", onMouseMove);
 
-  clickedSubtask.onmouseup = function (event) {
+  clickedSubtask.onmouseup = function (event: MouseEvent) {
     const x = event.clientX;
     const y = event.clientY;
     clickedSubtask.style.zIndex = -1;
