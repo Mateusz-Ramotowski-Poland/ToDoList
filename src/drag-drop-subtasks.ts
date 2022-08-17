@@ -20,11 +20,9 @@ export function moveSubtask(event) {
   if (clickedSubtaskDescription === null) return;
 
   const clickedSubtask = clickedSubtaskDescription.closest(".subtask");
-  const initialTask = clickedSubtaskDescription.closest(".task");
-  const initialClickedSubtaskPosition = clickedSubtask.closest(".task__subtasks");
-
-  const removeLocation = findLocationInArray(taskArray, clickedSubtask);
-
+  const clickedTask = clickedSubtaskDescription.closest(".task");
+  const clickedSubtaskList = clickedSubtask.closest(".task__subtasks");
+  const whereRemove = findLocationInArray(taskArray, clickedSubtask);
   clickedSubtask.style.position = "absolute";
   clickedSubtask.style.zIndex = 100;
   document.body.append(clickedSubtask);
@@ -34,11 +32,9 @@ export function moveSubtask(event) {
   }
 
   moveAt(event.pageX, event.pageY);
-
   function onMouseMove(event) {
     moveAt(event.pageX, event.pageY);
   }
-
   document.addEventListener("mousemove", onMouseMove);
 
   clickedSubtask.onmouseup = function (event) {
@@ -51,22 +47,19 @@ export function moveSubtask(event) {
     clickedSubtask.style.top = "0px";
     clickedSubtask.style.left = "0px";
 
-    if (newTask === initialTask) {
-      initialClickedSubtaskPosition?.insertAdjacentElement("afterbegin", clickedSubtask);
+    if (newTask === clickedTask || newTask === null) {
+      clickedSubtaskList?.insertAdjacentElement("afterbegin", clickedSubtask);
     } else {
       const newTasksList = newTask?.querySelector(".task__subtasks");
-
       newTasksList?.insertAdjacentElement("afterbegin", clickedSubtask);
-      taskArray[removeLocation.task].subtasks.splice(removeLocation.subtask, 1);
-
+      taskArray[whereRemove.task].subtasks.splice(whereRemove.subtask, 1);
       taskArray[getTaskIndex(taskArray, newTask)].subtasks.push({
         subtask: clickedSubtask.querySelector("p").textContent,
         done: clickedSubtask.querySelector("input").checked,
-        id: clickedSubtask.dataset.id,
+        id: parseInt(clickedSubtask.dataset.id),
       });
       saveTasksInLocalStorage(taskArray);
     }
-
     document.removeEventListener("mousemove", onMouseMove);
     clickedSubtask.onmouseup = null;
   };
