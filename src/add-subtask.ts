@@ -8,7 +8,7 @@ import { createIdNumber } from "./add-comment-and-task";
 export function createNewSubtaskTemplate(subtask: Subtask) {
   return `
   <div class="subtask" data-id='${subtask.id}'>
-    <p>${subtask.subtask}</p>
+    <p class="subtask__description">${subtask.subtask}</p>
     <input type="checkbox" name="task__checkbox--subtask" ${subtask.done === true ? "checked" : ""}/>
   </div>
     `;
