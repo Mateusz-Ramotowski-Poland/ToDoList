@@ -2,7 +2,7 @@ import { saveTasksInLocalStorage } from "./add-comment-and-task";
 import { Task } from "./interfaces";
 import { taskArray } from "./add-all-event-listeners";
 
-function getTaskIndex(tasks: Task[], clickedTask: HTMLElement) {
+export function getTaskIndex(tasks: Task[], clickedTask: HTMLElement) {
   return tasks.findIndex((task) => task.id === parseInt(clickedTask?.dataset.id as string));
 }
 

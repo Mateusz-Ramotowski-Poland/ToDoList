@@ -36,7 +36,7 @@ export function getFormattedDate(date: Date, onlyYearMonthDay: boolean = false):
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 }
 
-export function createNewTaskTemplate({ title, dueDate, id, comments, subtasks, done }: Task): string {
+export function createNewTaskTemplate({ title, dueDate, id, comments, subtasks, done, imgSrc }: Task): string {
   const commentsString = comments.map((comment) => createNewCommentTemplate(comment)).join("");
   const subtasksTemplate = subtasks.map((subtask) => createNewSubtaskTemplate(subtask)).join("");
 
@@ -49,7 +49,7 @@ export function createNewTaskTemplate({ title, dueDate, id, comments, subtasks, 
   </div>
  
   <input type="file" name="upload-file"><br>
-  <img src="" height="100" width='100' alt="uploaded" hidden>
+  <img src="${imgSrc === "" ? "" : imgSrc}" height="100" width='100' alt="uploaded" ${imgSrc === "" ? "hidden" : ""}>
 
   <div class="task__subtasks">
     ${subtasksTemplate}
@@ -102,6 +102,7 @@ export function addNewTask(event: Event): void {
     comments: [],
     subtasks: [],
     done: false,
+    imgSrc: "",
   };
   taskArray.push(newTask);
   const newTaskString: string = createNewTaskTemplate(newTask);
