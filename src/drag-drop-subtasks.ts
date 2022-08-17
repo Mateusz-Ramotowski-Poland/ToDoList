@@ -2,7 +2,7 @@ import { saveTasksInLocalStorage } from "./add-comment-and-task";
 import { Task } from "./interfaces";
 import { taskArray } from "./add-all-event-listeners";
 
-function getTaskIndex(tasks: Task[], clickedTask: HTMLElement) {
+export function getTaskIndex(tasks: Task[], clickedTask: HTMLElement) {
   return tasks.findIndex((task) => task.id === parseInt(clickedTask?.dataset.id as string));
 }
 
@@ -32,12 +32,12 @@ export function moveSubtask(event) {
   }
 
   moveAt(event.pageX, event.pageY);
-  function onMouseMove(event) {
+  function onMouseMove(event: MouseEvent) {
     moveAt(event.pageX, event.pageY);
   }
   document.addEventListener("mousemove", onMouseMove);
 
-  clickedSubtask.onmouseup = function (event) {
+  clickedSubtask.onmouseup = function (event: MouseEvent) {
     const x = event.clientX;
     const y = event.clientY;
     clickedSubtask.style.zIndex = -1;

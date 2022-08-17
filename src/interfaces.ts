@@ -17,4 +17,5 @@ export interface Task {
   done: boolean;
   comments: Comment[];
   subtasks: Subtask[];
+  imgSrc: string;
 }
